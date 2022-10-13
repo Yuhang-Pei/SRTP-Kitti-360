@@ -1,5 +1,6 @@
 import numpy as np
-from math import log10, floor
+import os
+from math import floor
 from utility import Standardize
 
 def PointRasterize(file_name, N: int):
@@ -25,18 +26,15 @@ def main():
     # 此处需要相应函数接口，获取root_path和模型数目num
     # 此处的root_path和num已经固定了
 
-    root_path = 'E:\\SRTP\\part\\'
-    num = 150
+    root_path = './model/'
+    num = 400
 
     pca_matrix = list()
-    for i in range(num):
-        if i == 0:
-            dir_name = '000'
-        else:
-            dir_name = (2 - int(log10(i))) * '0' + repr(i)
-        print(dir_name)
-        file_name = root_path + dir_name + '\\' + 'pointcloud.npz'
-        bool_arr = PointRasterize(file_name, N = 8)
+    dirs = os.listdir(root_path)
+    for dir in dirs:
+        file = root_path + dir + '/pointcloud.npz'
+        print(file)
+        bool_arr = PointRasterize(file, N = 8)
         pca_matrix.append(bool_arr)
     
     WritePCAMatrix(pca_matrix)
